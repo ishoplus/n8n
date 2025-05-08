@@ -1,16 +1,14 @@
 FROM n8nio/n8n
 
-# 基本認證（如你設定）
 ENV N8N_BASIC_AUTH_ACTIVE=true
 ENV N8N_BASIC_AUTH_USER=admin
 ENV N8N_BASIC_AUTH_PASSWORD=yourpassword
 
-# Webhook 與 DB 設定
 ENV WEBHOOK_URL=https://your-app.up.railway.app/
 ENV DB_TYPE=sqlite
-ENV DB_SQLITE_DATABASE=/home/node/.n8n/database.sqlite
+ENV DB_SQLITE_DATABASE=/data/database.sqlite
 
-# 安裝 puppeteer 所需系統依賴
+# Puppeteer 所需系統套件
 RUN apt-get update && apt-get install -y \
   wget \
   ca-certificates \
@@ -31,9 +29,8 @@ RUN apt-get update && apt-get install -y \
   xdg-utils \
   --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# 安裝 n8n-nodes-puppeteer 套件
+# 安裝 Puppeteer 節點
 RUN npm install -g n8n-nodes-puppeteer
 
-VOLUME ["/home/node/.n8n"]
-
+# 啟動指令
 CMD ["n8n"]
